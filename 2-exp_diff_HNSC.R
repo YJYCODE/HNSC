@@ -5,11 +5,9 @@ setwd(path)
 cancer <- "HNSC"
 FPKM <- as.data.frame(fread(paste0(path,cancer,"\\","1-data\\",
                                    cancer,"_FPKM.txt"),header = T,sep = "\t"))
-## 1-2列，gene name  3:115列 ecDNA- 116:154列 ecDNA+
 
-##############秩和检验 分析差异 ####################################
 
-FPKM <- FPKM[rowMeans(FPKM[,3:ncol(FPKM)],na.rm = T)>0,] # 去掉全部是0的行
+FPKM <- FPKM[rowMeans(FPKM[,3:ncol(FPKM)],na.rm = T)>0,] 
 FPKM$mean_negative <- apply(FPKM[,3:115],1,function(x){mean(2^x-1,na.rm = T)})
 FPKM$mean_positive <- apply(FPKM[,116:154],1,function(x){mean(2^x-1,na.rm = T)})
 FPKM$logFC <- log2(FPKM$mean_positive)-log2(FPKM$mean_negative)
